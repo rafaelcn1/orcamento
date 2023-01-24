@@ -1,13 +1,13 @@
-package br.com.orcamento;
+package br.com.eventos;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class OrcamentoApplication {
+public class EventosApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(OrcamentoApplication.class, args);
+		SpringApplication.run(EventosApplication.class, args);
 	}
 
 }
