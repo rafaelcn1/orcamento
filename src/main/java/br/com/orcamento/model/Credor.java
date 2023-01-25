@@ -1,17 +1,21 @@
 package br.com.orcamento.model;
 
 import java.io.Serializable;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Credor implements Serializable {
-	
+
 	/**
 	 * 
 	 */
@@ -24,12 +28,22 @@ public class Credor implements Serializable {
 	private int fechamentoFatura;
 	private double limiteDisponivel;
 	private double limiteUsado;
-	
-	@Id
-	@ManyToOne // Muitos credores para um resposavél apenas, exemplo: vários cartões para um responsavel, Rafael pode ter 3 cartões de crédito
-	@JoinColumn(name = "responsavel") // Renomear a coluna para não ficar com o nome padrão
-	// (REGISTRO_CONSULTA_SEQUENCIAL
+
+	/*
+	 * Muitos credores para um resposavél apenas, exemplo: vários cartões para um
+	 * responsavel, Rafael pode ter 3 cartões de crédito
+	 */
+	@ManyToOne
+	@JoinColumn(name = "responsavel_compra") // Renomear a coluna para não ficar com o nome padrão
 	private Responsavel responsavel;
+
+	/*
+	 * Um credor para varias compras, exemplo, compra de feira paga com cartão
+	 * inter, uber pago com o cartão inter
+	 */
+	/* mappedBy = "credor", será o nome do objeto credor na class Compra */
+	@OneToMany(mappedBy = "credor", fetch = FetchType.LAZY, cascade = CascadeType.ALL) 
+	private List<Compra> listaCompras;
 
 	public long getId() {
 		return id;
@@ -87,9 +101,16 @@ public class Credor implements Serializable {
 		this.responsavel = responsavel;
 	}
 
+	public List<Compra> getListaCompras() {
+		return listaCompras;
+	}
+
+	public void setListaCompras(List<Compra> listaCompras) {
+		this.listaCompras = listaCompras;
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
 
-	
 }
